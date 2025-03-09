@@ -1,21 +1,16 @@
 from app import db
 
-class UserModel(db.Model):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(80),unique= True, nullable = False)    
     password = db.Column(db.String(200),unique= True, nullable = False) 
     fullName = db.Column(db.String(100),unique= True, nullable = False)
     qualification = db.Column(db.String(80),unique= True, nullable = False)
-    dob = db.Column(db.String) 
+    dob = db.Column(db.Date) 
 
     scores = db.relationship('Score', backref = 'user', lazy = True)
 
-class Subject(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(100), nullable = False)
-    description = db.Column(db.Text)
 
-    chapters = db.relationship('Chapter', backref = 'subject', lazy = True)
 
 class Subject(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -40,14 +35,14 @@ class Quiz(db.Model):
     
     questions = db.relationship('Questions', backref = 'quiz', lazy = True)
 
-class Question(db.Model):
+class Questions(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(100), nullable = False)
     question_statement = db.Column(db.Text)
-    option1 = db.Column(db.String(200))
-    option2 = db.Column(db.String(200))
-    option3 = db.Column(db.String(200))
-    option4 = db.Column(db.String(200))
+    option1 = db.Column(db.String(200), nullable=False)
+    option2 = db.Column(db.String(200),nullable=False)
+    option3 = db.Column(db.String(200),nullable=False)
+    option4 = db.Column(db.String(200),nullable=False)
     correct_option = db.Column(db.Integer, nullable = False)
 
     quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.id'), nullable = False)
@@ -57,5 +52,5 @@ class Score(db.Model):
     total_scored = db.Column(db.Integer, nullable = False)
     timeStamp = db.Column(db.DateTime, default = db.func.current_timestamp())
     quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.id'), nullable = False)
-    quiz_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
+    user_id= db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
 
