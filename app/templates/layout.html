@@ -6,8 +6,33 @@
     {% block head %}
     <title>{% block title %} {% endblock %} -  Quiz Master</title>
     {% endblock %}
+
+    <style>
+        .flashes .success {
+            color: green;
+        }
+        .flashes .error {
+            color: red;
+        }
+    </style>
 </head>
+
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class="flashes">
+    {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+    <ul>
+        <li>    <a href="{{ url_for('home') }}">Home</a>    </li>
+
+        <li>  <a href="{{ url_for('register') }}">Register</a>   </li>
+        <li>  <a href="{{ url_for('login') }}">Login</a>  </li>
+    </ul>
     <div id = "content">
                 {% block content %} {% endblock %}
     </div>
