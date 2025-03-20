@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block head %}
-    <title>{% block title %} {% endblock %} -  Quiz Master</title>
+    <title>{% block title %} {% endblock %} - Quiz Master</title>
     {% endblock %}
 
     <style>
@@ -19,22 +19,30 @@
 
 <body>
     {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    <ul class="flashes">
-    {% for category, message in messages %}
-      <li class="{{ category }}">{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
-    <ul>
-        <li>    <a href="{{ url_for('home') }}">Home</a>    </li>
+    {% if messages %}
+        <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
 
-        <li>  <a href="{{ url_for('register') }}">Register</a>   </li>
-        <li>  <a href="{{ url_for('login') }}">Login</a>  </li>
+    <ul>
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('register') }}">Register</a></li>
+        {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        {% else %}
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+        {% endif %}
     </ul>
-    <div id = "content">
-                {% block content %} {% endblock %}
+
+    <div id="content">
+        {% if current_user.is_authenticated %}
+            Hi {{ current_user.fullName }}
+        {% endif %}
+        {% block content %} {% endblock %}
     </div>
 </body>
 </html>
